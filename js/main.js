@@ -1,3 +1,15 @@
+const pages = document.querySelectorAll(".page");
+const nav = document.querySelectorAll(".navigation p");
+
+nav.forEach((dot, i) => {
+  dot.addEventListener("click", () => {
+    pages[i].scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  });
+});
+
 const words = [
   "node",
   "react",

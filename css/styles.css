@@ -1,5 +1,6 @@
 html {
   scroll-behavior: smooth;
+  /* filter: invert(100%); */
 }
 
 * {
@@ -10,6 +11,10 @@ html {
 a {
   text-decoration: none;
   color: inherit;
+}
+
+.flex {
+  display: flex;
 }
 
 /* fonts */
@@ -177,6 +182,9 @@ a {
 }
 
 /* about */
+.about {
+  overflow: hidden;
+}
 
 .about-title {
   font-size: 3rem;
@@ -186,6 +194,31 @@ a {
   color: white;
   width: fit-content;
   padding: 0 2rem;
+}
+
+.card-group {
+  gap: 1rem;
+  margin-left: 5vw;
+  margin-top: 12vh;
+  margin-right: 5vw;
+}
+
+.about-card {
+  position: relative;
+
+  height: 50vh;
+  padding: 1rem;
+
+  border: 2px solid rgba(0, 0, 0, 0.434);
+  backdrop-filter: blur(2px);
+}
+
+.about-1-svg {
+  transform: rotate(-12deg);
+  top: 18vw;
+  right: 20vw;
+  position: absolute;
+  width: 40vw;
 }
 
 /* mobile only layout */

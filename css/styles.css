@@ -3,6 +3,11 @@
   padding: 0;
 }
 
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
 /* fonts */
 
 .koulen-regular {
@@ -64,6 +69,12 @@
   white-space: nowrap;
   transition: 0.25s ease;
   pointer-events: none;
+  background-color: rgba(255, 255, 255, 0.156);
+  /* border effects */
+  padding: 0.4rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.047);
+  backdrop-filter: blur(10px);
 }
 
 /* hover state */
@@ -92,6 +103,8 @@
 
 .title {
   /*background-color: red;*/
+  position: relative;
+  overflow: hidden;
 }
 
 .name {
@@ -115,10 +128,51 @@
   bottom: 3.5rem;
 }
 
+.random {
+  position: absolute;
+}
+
 .random p {
+  font-family: "Syne", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+
   color: white;
   background-color: black;
   width: fit-content;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
+
+  clip-path: inset(0 100% 0 0);
+}
+
+.random.show p {
+  animation: reveal 0.8s ease forwards;
+}
+
+@keyframes reveal {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+.random.fade p {
+  animation: fadeOut 1s ease forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 100% 0 0);
+  }
+}
+
+/* mobile only layout */
+@media only screen and (max-width: 600px) {
+  .name {
+    margin-left: 0.4rem;
+  }
 }

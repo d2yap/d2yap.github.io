@@ -39,6 +39,23 @@ a {
   font-style: normal;
 }
 
+.toggle {
+  cursor: pointer;
+  z-index: 99;
+  position: absolute;
+  width: 3vw;
+  height: 3vw;
+  background-color: black;
+  right: 0;
+}
+
+.toggle svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 .navigation {
   z-index: 99;
   text-align: right;
@@ -205,12 +222,17 @@ a {
 
 .about-card {
   position: relative;
-
+  width: 40vw;
   height: 50vh;
   padding: 1rem;
 
   border: 2px solid rgba(0, 0, 0, 0.434);
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(3px);
+}
+
+.about-card p {
+  margin-top: 1.3rem;
+  font-size: 2.5rem;
 }
 
 .about-1-svg {

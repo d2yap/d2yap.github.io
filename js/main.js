@@ -1,3 +1,4 @@
+// navigator
 const pages = document.querySelectorAll(".page");
 const nav = document.querySelectorAll(".navigation p");
 
@@ -10,6 +11,17 @@ nav.forEach((dot, i) => {
   });
 });
 
+// toggle
+const toggle = document.querySelector(".toggle");
+toggle.addEventListener("click", () => {
+  if (document.documentElement.style.filter === "invert(100%)") {
+    document.documentElement.style.filter = "invert(0%)";
+  } else {
+    document.documentElement.style.filter = "invert(100%)";
+  }
+});
+
+// words
 const words = [
   "node",
   "react",

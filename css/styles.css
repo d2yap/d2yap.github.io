@@ -43,9 +43,9 @@ a {
   cursor: pointer;
   z-index: 99;
   position: absolute;
-  width: 3%;
+  width: 2.4rem;
   height: 0;
-  padding-top: 3%;
+  padding-top: 2.4rem;
   background-color: black;
   right: 0;
 }
@@ -223,7 +223,7 @@ a {
 }
 
 .about-card {
-  z-index: 99;
+  z-index: 98;
   position: relative;
   width: 60vw;
   height: 50vh;

@@ -43,8 +43,9 @@ a {
   cursor: pointer;
   z-index: 99;
   position: absolute;
-  width: 3vw;
-  height: 3vw;
+  width: 3%;
+  height: 0;
+  padding-top: 3%;
   background-color: black;
   right: 0;
 }
@@ -214,6 +215,7 @@ a {
 }
 
 .card-group {
+  position: relative;
   gap: 1rem;
   margin-left: 5vw;
   margin-top: 12vh;
@@ -221,26 +223,52 @@ a {
 }
 
 .about-card {
+  z-index: 99;
   position: relative;
-  width: 40vw;
+  width: 60vw;
   height: 50vh;
   padding: 1rem;
 
   border: 2px solid rgba(0, 0, 0, 0.434);
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(10px);
 }
 
 .about-card p {
   margin-top: 1.3rem;
-  font-size: 2.5rem;
+  font-size: 2.2rem;
 }
 
 .about-1-svg {
   transform: rotate(-12deg);
-  top: 18vw;
-  right: 20vw;
+  top: 15vw;
+  left: -14vw;
   position: absolute;
   width: 40vw;
+}
+.cursor {
+  display: inline-block;
+  width: 3px;
+  height: 1em;
+  background-color: black;
+  margin-left: 0.4rem;
+  animation: blink 1s step-end infinite;
+
+  transform: translateY(4px);
+}
+
+@keyframes blink {
+  from,
+  to {
+    background-color: transparent;
+  }
+  50% {
+    background-color: black;
+  }
+}
+
+/* contact */
+.contact svg {
+  margin-left: 30vw;
 }
 
 /* mobile only layout */

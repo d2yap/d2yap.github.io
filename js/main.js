@@ -1,3 +1,51 @@
+const projects = [
+  {
+    title: "8mb-electron",
+    description:
+      "A program that simplifies video compression for platforms with video size limits ",
+    tags: ["JavaScript", "Electron", "FFMPEG"],
+    link: "https://github.com/d2yap/8mb-electron",
+    featured: true,
+  },
+  {
+    title: "Allusion-Deep",
+    description:
+      "A fork of Allusion, a free and open source desktop application for managing your visual library. Adding local image tagging using a WD14-based model for tagging.",
+    tags: ["JavaScript", "Electron", "Python", "Pytorch"],
+    link: "https://github.com/d2yap/Allusion-Deep",
+  },
+  {
+    title: "PINnote",
+    description:
+      'A mobile application about "pinning" notes to your current location.',
+    tags: ["Flutter", "Dart", "Firebase"],
+    link: "https://github.com/d2yap/pinnote",
+  },
+  {
+    title: "github-download-button",
+    description:
+      "A browser extension for clearly labeling the releases button on GitHub for casual users.",
+    tags: ["Javascript", "Firefox", "Extension"],
+    link: "https://github.com/d2yap/github-download-button",
+  },
+];
+const projectContainer = document.getElementById("projects-items");
+
+projects.forEach((p) => {
+  const card = document.createElement("a");
+  card.href = p.link;
+  card.target = "_blank";
+  card.className = "repo-card";
+
+  card.innerHTML = `
+    <h3>${p.title}</h3>
+    <p>${p.description}</p>
+    <div class="tags">${p.tags.join(" • ")}</div>
+  `;
+
+  projectContainer.appendChild(card);
+});
+
 // navigator
 const pages = document.querySelectorAll(".page");
 const nav = document.querySelectorAll(".navigation p");
@@ -14,11 +62,7 @@ nav.forEach((dot, i) => {
 // toggle
 const toggle = document.querySelector(".toggle");
 toggle.addEventListener("click", () => {
-  if (document.documentElement.style.filter === "invert(100%)") {
-    document.documentElement.style.filter = "invert(0%)";
-  } else {
-    document.documentElement.style.filter = "invert(100%)";
-  }
+  document.documentElement.classList.toggle("dark");
 });
 
 // words

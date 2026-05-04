@@ -1,6 +1,100 @@
 html {
   scroll-behavior: smooth;
-  /* filter: invert(100%); */
+}
+
+html.dark {
+  background-color: #000;
+  color: #fff;
+}
+
+html.dark body {
+  background-color: #000;
+  color: #fff;
+}
+
+html.dark .toggle {
+  background-color: white;
+}
+
+html.dark .toggle svg path {
+  fill: black;
+}
+
+html.dark .navigation p {
+  background-color: white;
+}
+
+html.dark .page {
+  background-image:
+    linear-gradient(to right, rgba(200, 200, 200, 0.3) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(200, 200, 200, 0.3) 1px, transparent 1px);
+}
+
+html.dark .random p {
+  background-color: white;
+  color: black;
+}
+
+html.dark .h1-title,
+html.dark .subtitle {
+  background-color: white;
+  color: black;
+}
+
+html.dark .about-card {
+  background-color: rgba(30, 30, 30, 0.7);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+html.dark .about-card p {
+  color: #fff;
+}
+
+html.dark .cursor {
+  background-color: white;
+}
+
+html.dark .skills-group div {
+  border-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(30, 30, 30, 0.5);
+}
+
+html.dark .skills-group div p {
+  color: #fff;
+}
+
+html.dark .repo-card {
+  border-color: black;
+  background-color: #000;
+  color: white;
+}
+
+html.dark .repo-card:hover {
+  background-color: white;
+  color: black;
+  border-color: white;
+}
+
+html.dark .projects-items .repo-card h3 {
+  background-color: white;
+  color: black;
+}
+
+html.dark .contact svg rect {
+  fill: black;
+}
+
+html.dark .contact svg g {
+  fill: white;
+}
+
+html.dark .links a,
+html.dark .links p {
+  color: white;
+}
+
+html.dark .cursor {
+  filter: invert(100%);
 }
 
 * {
@@ -204,7 +298,8 @@ a {
   overflow: hidden;
 }
 
-.about-title {
+.h1-title,
+.projects-items .repo-card h3 {
   font-size: 3rem;
   margin-left: 2rem;
   font-weight: 800;
@@ -212,6 +307,13 @@ a {
   color: white;
   width: fit-content;
   padding: 0 2rem;
+}
+
+.subtitle {
+  background-color: black;
+  color: white;
+  width: fit-content;
+  padding: 0 0.4rem;
 }
 
 .card-group {
@@ -245,6 +347,7 @@ a {
   position: absolute;
   width: 40vw;
 }
+
 .cursor {
   display: inline-block;
   width: 3px;
@@ -266,14 +369,161 @@ a {
   }
 }
 
+.skills-group {
+  margin-top: 1.5rem;
+
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.skills-group div {
+  border: 1px solid rgba(0, 0, 0, 0.434);
+  width: 20%;
+  padding-top: 10%;
+}
+
+.skills-group div p {
+  text-align: center;
+  text-wrap: balance;
+  font-size: 1.2rem;
+  overflow-wrap: break-word;
+}
+
+/* projects */
+
+.projects-items {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  overflow-x: hidden;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 10%;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.repo-card {
+  min-width: 200px;
+  flex: 1 1 220px;
+  overflow-wrap: break-word;
+  padding: 1rem;
+  border: 1px solid white;
+  color: black;
+  text-decoration: none;
+  transition: 0.2s ease;
+}
+
+.repo-card:hover {
+  transform: translateY(-6px);
+  background: white;
+  color: black;
+}
+.projects-items .repo-card h3 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin: 0;
+  padding: 0 1rem;
+}
+
+.tags {
+  padding-top: 1rem;
+  font-weight: 700;
+}
 /* contact */
 .contact svg {
-  margin-left: 30vw;
+  display: block;
+  margin: 0 auto;
+  max-width: 90%;
+  height: auto;
+}
+
+.links {
+  font-size: 1.4rem;
+  margin-top: 10rem;
+  margin-left: 3vw;
 }
 
 /* mobile only layout */
 @media only screen and (max-width: 600px) {
   .name {
     margin-left: 0.4rem;
+  }
+  .card-group {
+    margin: 0 2%;
+  }
+  .contact svg {
+    display: block;
+    margin: 0 auto;
+    max-width: 90%;
+    height: auto;
+  }
+  .contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .contact svg {
+    order: -1;
+    margin-top: 0;
+  }
+  .links {
+    position: relative;
+    bottom: 5rem;
+    margin-left: 0;
+    margin-right: 0;
+    text-align: center;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .card-group {
+    flex-direction: column;
+    margin-left: 4%;
+    margin-right: 9%;
+    margin-top: 0;
+    gap: 0.4rem;
+  }
+
+  .about-card {
+    height: 40%;
+    width: 100%;
+  }
+
+  .h1-title {
+    font-size: 2.4rem;
+  }
+
+  .projects-items {
+    margin: 0;
+  }
+  .contact {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .contact svg {
+    order: -1;
+    margin-top: 0;
+  }
+  .links {
+    position: relative;
+    bottom: 10rem;
+    margin-left: 0;
+    margin-right: 0;
+    text-align: center;
+  }
+}
+@media only screen and (max-width: 1100px) {
+  .contact svg {
+    display: block;
+    margin: 0 auto;
+    max-width: 90%;
+    height: auto;
+  }
+  .links {
+    margin-top: 14vw;
+    margin-left: 2rem;
   }
 }

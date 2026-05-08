@@ -3,17 +3,11 @@ const projects = [
     title: "8mb-electron",
     description:
       "A program that simplifies video compression for platforms with video size limits ",
-    tags: ["JavaScript", "Electron", "FFMPEG"],
+    tags: ["JavaScript", "Electron", "FFmpeg"],
     link: "https://github.com/d2yap/8mb-electron",
     featured: true,
   },
-  {
-    title: "Allusion-Deep",
-    description:
-      "A fork of Allusion, a free and open source desktop application for managing your visual library. Adding local image tagging using a WD14-based model for tagging.",
-    tags: ["JavaScript", "Electron", "Python", "Pytorch"],
-    link: "https://github.com/d2yap/Allusion-Deep",
-  },
+
   {
     title: "PINnote",
     description:
@@ -22,11 +16,24 @@ const projects = [
     link: "https://github.com/d2yap/pinnote",
   },
   {
+    title: "Allusion-Deep",
+    description:
+      "A fork of Allusion, a free and open source desktop application for managing your visual library. Adding local image tagging using a WD14-based model for tagging.",
+    tags: ["TypeScript", "Electron", "Python", "Pytorch"],
+    link: "https://github.com/d2yap/Allusion-Deep",
+  },
+  {
     title: "github-download-button",
     description:
       "A browser extension for clearly labeling the releases button on GitHub for casual users.",
     tags: ["Javascript", "Firefox", "Extension"],
     link: "https://github.com/d2yap/github-download-button",
+  },
+  {
+    title: "deskdashy",
+    description: "A Tauri application in development.",
+    tags: ["Typescript", "Rust", "Tauri"],
+    link: "https://github.com/d2yap/deskdashy",
   },
 ];
 const projectContainer = document.getElementById("projects-items");

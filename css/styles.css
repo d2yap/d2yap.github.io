@@ -417,8 +417,8 @@ a {
 
 .repo-card:hover {
   transform: translateY(-6px);
-  background: white;
-  color: black;
+  background: black;
+  color: white;
 }
 .projects-items .repo-card h3 {
   font-size: 1.2rem;
@@ -443,6 +443,16 @@ a {
   font-size: 1.4rem;
   margin-top: 10rem;
   margin-left: 3vw;
+}
+
+/* smaller mobile sizes */
+@media only screen and (max-width: 580px) {
+  .projects-items {
+    gap: 0;
+  }
+  .repo-card {
+    font-size: 0.9rem;
+  }
 }
 
 /* mobile only layout */
@@ -480,7 +490,7 @@ a {
 @media only screen and (max-width: 900px) {
   .card-group {
     flex-direction: column;
-    margin-left: 4%;
+    margin-left: 1%;
     margin-right: 9%;
     margin-top: 0;
     gap: 0.4rem;

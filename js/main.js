@@ -29,12 +29,6 @@ const projects = [
     tags: ["Javascript", "Firefox", "Extension"],
     link: "https://github.com/d2yap/github-download-button",
   },
-  {
-    title: "deskdashy",
-    description: "A Tauri application in development.",
-    tags: ["Typescript", "Rust", "Tauri"],
-    link: "https://github.com/d2yap/deskdashy",
-  },
 ];
 const projectContainer = document.getElementById("projects-items");
 

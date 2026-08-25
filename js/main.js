@@ -7,7 +7,6 @@ const projects = [
     link: "https://github.com/d2yap/8mb-electron",
     featured: true,
   },
-
   {
     title: "PINnote",
     description:
@@ -21,6 +20,12 @@ const projects = [
       "A fork of Allusion, a free and open source desktop application for managing your visual library. Adding local image tagging using a WD14-based model for tagging.",
     tags: ["TypeScript", "Electron", "Python", "Pytorch"],
     link: "https://github.com/d2yap/Allusion-Deep",
+  },
+  {
+    title: "FFXIV Playtime Tracker",
+    description: "A FFXIV plugin used for tracking playtime.",
+    tags: ["C#", "Plugin", "SQLite"],
+    link: "https://github.com/d2yap/playtime-tracker",
   },
   {
     title: "github-download-button",

@@ -5,7 +5,6 @@ const projects = [
       "A program that simplifies video compression for platforms with video size limits ",
     tags: ["JavaScript", "Electron", "FFmpeg"],
     link: "https://github.com/d2yap/8mb-electron",
-    featured: true,
   },
   {
     title: "PINnote",
@@ -37,39 +36,97 @@ const projects = [
 ];
 const projectContainer = document.getElementById("projects-items");
 
+// Build cards with DOM APIs so project data can never be parsed as markup.
 projects.forEach((p) => {
   const card = document.createElement("a");
   card.href = p.link;
   card.target = "_blank";
+  card.rel = "noopener noreferrer";
   card.className = "repo-card";
 
-  card.innerHTML = `
-    <h3>${p.title}</h3>
-    <p>${p.description}</p>
-    <div class="tags">${p.tags.join(" • ")}</div>
-  `;
+  const title = document.createElement("h3");
+  title.textContent = p.title;
 
-  projectContainer.appendChild(card);
+  const description = document.createElement("p");
+  description.textContent = p.description;
+
+  const tags = document.createElement("div");
+  tags.className = "tags";
+  tags.textContent = p.tags.join(" • ");
+
+  card.append(title, description, tags);
+  projectContainer?.append(card);
 });
 
 // navigator
 const pages = document.querySelectorAll(".page");
-const nav = document.querySelectorAll(".navigation p");
+const navLinks = document.querySelectorAll(".navigation a");
+const scroller = document.querySelector(".main");
 
-nav.forEach((dot, i) => {
-  dot.addEventListener("click", () => {
-    pages[i].scrollIntoView({
-      behavior: "smooth",
-      block: "start",
-    });
+navLinks.forEach((link) => {
+  link.addEventListener("click", (event) => {
+    // resolve the target from the href, so links never rely on DOM order
+    const target = document.getElementById(link.hash.slice(1));
+    if (!target) return;
+
+    event.preventDefault();
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
   });
 });
 
+// highlight whichever section is currently snapped into view
+if (scroller && pages.length > 0 && navLinks.length > 0) {
+  const spy = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+
+        navLinks.forEach((link) => {
+          const isActive = link.hash === `#${entry.target.id}`;
+          link.classList.toggle("active", isActive);
+
+          if (isActive) {
+            link.setAttribute("aria-current", "true");
+          } else {
+            link.removeAttribute("aria-current");
+          }
+        });
+      });
+    },
+    { root: scroller, threshold: 0.5 },
+  );
+
+  pages.forEach((page) => spy.observe(page));
+}
+
 // toggle
 const toggle = document.querySelector(".toggle");
-toggle.addEventListener("click", () => {
-  document.documentElement.classList.toggle("dark");
-});
+const root = document.documentElement;
+
+function setTheme(isDark, persist) {
+  root.classList.toggle("dark", isDark);
+
+  if (toggle) {
+    toggle.setAttribute("aria-pressed", String(isDark));
+  }
+
+  if (persist) {
+    try {
+      localStorage.setItem("theme", isDark ? "dark" : "light");
+    } catch (e) {
+      /* storage unavailable (private mode) */
+    }
+  }
+}
+
+if (toggle) {
+  // the inline <head> script already applied the stored/system theme
+  setTheme(root.classList.contains("dark"), false);
+
+  toggle.addEventListener("click", () => {
+    setTheme(!root.classList.contains("dark"), true);
+  });
+}
 
 // words
 const words = [
@@ -93,6 +150,9 @@ const words = [
 const container = document.querySelector(".title");
 
 let lastWord = null;
+let spawnTimer = null;
+let titleVisible = false;
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 // preventing duplicates in a row
 function getWord() {
@@ -105,6 +165,8 @@ function getWord() {
 }
 
 function spawnWord() {
+  if (!container) return;
+
   const wrapper = document.createElement("div");
   wrapper.className = "random";
 
@@ -120,7 +182,6 @@ function spawnWord() {
 
   const x = Math.random() * maxX;
   const y = Math.random() * maxY;
-  console.log(x, y);
 
   wrapper.style.left = `${x}px`;
   wrapper.style.top = `${y}px`;
@@ -137,5 +198,37 @@ function spawnWord() {
   }, 3000);
 }
 
-// spawn continuously
-setInterval(spawnWord, 500);
+// only animate while the title page is on screen and the tab is visible
+function startWords() {
+  if (spawnTimer !== null || !container || reduceMotion.matches) return;
+
+  spawnWord();
+  spawnTimer = window.setInterval(spawnWord, 500);
+}
+
+function stopWords() {
+  if (spawnTimer === null) return;
+
+  window.clearInterval(spawnTimer);
+  spawnTimer = null;
+}
+
+function syncWords() {
+  if (titleVisible && !document.hidden) {
+    startWords();
+  } else {
+    stopWords();
+  }
+}
+
+if (container && !reduceMotion.matches) {
+  new IntersectionObserver(
+    ([entry]) => {
+      titleVisible = entry.isIntersecting;
+      syncWords();
+    },
+    { threshold: 0.25 },
+  ).observe(container);
+
+  document.addEventListener("visibilitychange", syncWords);
+}

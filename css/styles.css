@@ -1,100 +1,51 @@
-html {
-  scroll-behavior: smooth;
+:root {
+  color-scheme: light;
+
+  --bg: #fff;
+  --fg: #000;
+  --grid: rgba(128, 128, 128, 0.3);
+  --border: rgba(0, 0, 0, 0.434);
+  --card-bg: transparent;
+  --tile-bg: transparent;
+  --chip-bg: #000;
+  --chip-fg: #fff;
+  --qr-bg: #fff;
+  --qr-fg: #000;
 }
 
 html.dark {
-  background-color: #000;
-  color: #fff;
+  color-scheme: dark;
+
+  --bg: #000;
+  --fg: #fff;
+  --grid: rgba(200, 200, 200, 0.3);
+  --border: rgba(255, 255, 255, 0.2);
+  --card-bg: rgba(30, 30, 30, 0.7);
+  --tile-bg: rgba(30, 30, 30, 0.5);
+  --chip-bg: #fff;
+  --chip-fg: #000;
+  --qr-bg: #000;
+  --qr-fg: #fff;
 }
 
-html.dark body {
-  background-color: #000;
-  color: #fff;
+html {
+  background-color: var(--bg);
+  color: var(--fg);
+  scroll-behavior: smooth;
 }
 
-html.dark .toggle {
-  background-color: white;
+body {
+  background-color: var(--bg);
+  color: var(--fg);
 }
 
-html.dark .toggle svg path {
-  fill: black;
+.main {
+  scroll-behavior: smooth;
 }
 
-html.dark .navigation p {
-  background-color: white;
-}
-
-html.dark .page {
-  background-image:
-    linear-gradient(to right, rgba(200, 200, 200, 0.3) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(200, 200, 200, 0.3) 1px, transparent 1px);
-}
-
-html.dark .random p {
-  background-color: white;
-  color: black;
-}
-
-html.dark .h1-title,
-html.dark .subtitle {
-  background-color: white;
-  color: black;
-}
-
-html.dark .about-card {
-  background-color: rgba(30, 30, 30, 0.7);
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-html.dark .about-card p {
-  color: #fff;
-}
-
-html.dark .cursor {
-  background-color: white;
-}
-
-html.dark .skills-group div {
-  border-color: rgba(255, 255, 255, 0.2);
-  background-color: rgba(30, 30, 30, 0.5);
-}
-
-html.dark .skills-group div p {
-  color: #fff;
-}
-
-html.dark .repo-card {
-  border-color: black;
-  background-color: #000;
-  color: white;
-}
-
-html.dark .repo-card:hover {
-  background-color: white;
-  color: black;
-  border-color: white;
-}
-
-html.dark .projects-items .repo-card h3 {
-  background-color: white;
-  color: black;
-}
-
-html.dark .contact svg rect {
-  fill: black;
-}
-
-html.dark .contact svg g {
-  fill: white;
-}
-
-html.dark .links a,
-html.dark .links p {
-  color: white;
-}
-
-html.dark .cursor {
-  filter: invert(100%);
+:focus-visible {
+  outline: 3px solid var(--fg);
+  outline-offset: 3px;
 }
 
 * {
@@ -137,11 +88,13 @@ a {
   cursor: pointer;
   z-index: 99;
   position: absolute;
-  width: 2.4rem;
-  height: 0;
-  padding-top: 2.4rem;
-  background-color: black;
+  top: 0;
   right: 0;
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: 0;
+  border: none;
+  background-color: var(--chip-bg);
 }
 
 .toggle svg {
@@ -149,6 +102,10 @@ a {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.toggle svg path {
+  fill: var(--chip-fg);
 }
 
 .navigation {
@@ -163,24 +120,34 @@ a {
   gap: 20px;
 }
 
-.navigation p {
+.navigation a {
   position: relative;
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background: black;
+  background: var(--chip-bg);
   cursor: pointer;
   transition: all 0.25s ease;
 }
 
-.navigation p::before {
+.navigation a.active {
+  transform: scale(1.5);
+  box-shadow: 0 0 0 4px var(--border);
+}
+
+/* enlarged hit area; kept clear of the right edge so it can't create
+   horizontal page scroll on narrow viewports */
+.navigation a::before {
   content: "";
   position: absolute;
-  inset: -10px; /* invisible hover padding */
+  top: -10px;
+  bottom: -10px;
+  left: -10px;
+  right: 0;
 }
 
 /* label */
-.navigation p::after {
+.navigation a::after {
   content: attr(data-label);
   position: absolute;
   right: 20px;
@@ -199,35 +166,37 @@ a {
 }
 
 /* hover state */
-.navigation p:hover::after {
+.navigation a:hover::after {
   opacity: 1;
   transform: translateY(-50%) translateX(0);
 }
 
 .main {
-  width: 100vw;
+  width: 100%;
   height: 100vh;
+  height: 100dvh;
   scroll-snap-type: y mandatory;
   overflow-y: scroll;
 }
 
 .page {
-  width: 100vw;
+  width: 100%;
   height: 100vh;
+  height: 100dvh;
   background-size: 40px 40px;
   background-image:
-    linear-gradient(to right, rgba(128, 128, 128, 0.3) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(128, 128, 128, 0.3) 1px, transparent 1px);
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
 
   scroll-snap-align: start;
 }
 
 .title {
-  /*background-color: red;*/
   position: relative;
   overflow: hidden;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
+  height: 100dvh;
 }
 
 .name {
@@ -236,11 +205,12 @@ a {
   margin-left: 2rem;
 }
 
-#name-label {
+.name-label {
   font-size: 5rem;
+  font-weight: inherit;
 }
 
-#job-title {
+.job-title {
   position: relative;
   bottom: 3.5rem;
   font-size: 2rem;
@@ -261,8 +231,8 @@ a {
   font-weight: 700;
   font-style: normal;
 
-  color: white;
-  background-color: black;
+  color: var(--chip-fg);
+  background-color: var(--chip-bg);
   width: fit-content;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -303,15 +273,16 @@ a {
   font-size: 3rem;
   margin-left: 2rem;
   font-weight: 800;
-  background-color: black;
-  color: white;
+  background-color: var(--chip-bg);
+  color: var(--chip-fg);
   width: fit-content;
   padding: 0 2rem;
 }
 
 .subtitle {
-  background-color: black;
-  color: white;
+  font-size: 2rem;
+  background-color: var(--chip-bg);
+  color: var(--chip-fg);
   width: fit-content;
   padding: 0 0.4rem;
 }
@@ -331,13 +302,14 @@ a {
   height: 50vh;
   padding: 1rem;
 
-  border: 2px solid rgba(0, 0, 0, 0.434);
+  border: 2px solid var(--border);
+  background-color: var(--card-bg);
   backdrop-filter: blur(10px);
 }
 
 .about-card p {
   margin-top: 1.3rem;
-  font-size: 2.2rem;
+  font-size: clamp(1.35rem, 1.5vw + 1.1rem, 2.2rem);
 }
 
 .about-1-svg {
@@ -352,7 +324,7 @@ a {
   display: inline-block;
   width: 3px;
   height: 1em;
-  background-color: black;
+  background-color: transparent;
   margin-left: 0.4rem;
   animation: blink 1s step-end infinite;
 
@@ -365,7 +337,7 @@ a {
     background-color: transparent;
   }
   50% {
-    background-color: black;
+    background-color: currentColor;
   }
 }
 
@@ -378,7 +350,8 @@ a {
 }
 
 .skills-group div {
-  border: 1px solid rgba(0, 0, 0, 0.434);
+  border: 1px solid var(--border);
+  background-color: var(--tile-bg);
   width: 20%;
   padding-top: 10%;
 }
@@ -409,16 +382,16 @@ a {
   flex: 1 1 220px;
   overflow-wrap: break-word;
   padding: 1rem;
-  border: 1px solid white;
-  color: black;
+  border: 1px solid transparent;
+  color: var(--fg);
   text-decoration: none;
   transition: 0.2s ease;
 }
 
 .repo-card:hover {
   transform: translateY(-6px);
-  background: black;
-  color: white;
+  background: var(--chip-bg);
+  color: var(--chip-fg);
 }
 .projects-items .repo-card h3 {
   font-size: 1.2rem;
@@ -432,11 +405,19 @@ a {
   font-weight: 700;
 }
 /* contact */
-.contact svg {
+.contact .qr {
   display: block;
   margin: 0 auto;
   max-width: 90%;
   height: auto;
+}
+
+.contact .qr rect {
+  fill: var(--qr-bg);
+}
+
+.contact .qr g {
+  fill: var(--qr-fg);
 }
 
 .links {
@@ -445,48 +426,19 @@ a {
   margin-left: 3vw;
 }
 
-/* smaller mobile sizes */
-@media only screen and (max-width: 580px) {
-  .projects-items {
-    gap: 0;
-  }
-  .repo-card {
-    font-size: 0.9rem;
-  }
+.links a {
+  display: block;
 }
 
-/* mobile only layout */
-@media only screen and (max-width: 600px) {
-  .name {
-    margin-left: 0.4rem;
-  }
-  .card-group {
-    margin: 0 2%;
-  }
-  .contact svg {
-    display: block;
-    margin: 0 auto;
-    max-width: 90%;
-    height: auto;
-  }
-  .contact {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .contact svg {
-    order: -1;
-    margin-top: 0;
-  }
+/* desktop / tablet */
+@media only screen and (max-width: 1100px) {
   .links {
-    position: relative;
-    bottom: 5rem;
-    margin-left: 0;
-    margin-right: 0;
-    text-align: center;
+    margin-top: 14vw;
+    margin-left: 2rem;
   }
 }
 
+/* stacked layout */
 @media only screen and (max-width: 900px) {
   .card-group {
     flex-direction: column;
@@ -497,26 +449,31 @@ a {
   }
 
   .about-card {
-    height: 40%;
+    height: auto;
     width: 100%;
   }
 
   .h1-title {
-    font-size: 2rem;
+    font-size: clamp(1.4rem, 5vw, 2rem);
+    margin-left: 1rem;
+    padding: 0 1rem;
   }
 
   .projects-items {
     margin: 0;
   }
+
   .contact {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
-  .contact svg {
+
+  .contact .qr {
     order: -1;
     margin-top: 0;
   }
+
   .links {
     position: relative;
     bottom: 10rem;
@@ -525,15 +482,44 @@ a {
     text-align: center;
   }
 }
-@media only screen and (max-width: 1100px) {
-  .contact svg {
-    display: block;
-    margin: 0 auto;
-    max-width: 90%;
-    height: auto;
+
+/* mobile only layout */
+@media only screen and (max-width: 600px) {
+  .name {
+    margin-left: 0.4rem;
   }
+
+  .card-group {
+    margin: 0 2%;
+  }
+
   .links {
-    margin-top: 14vw;
-    margin-left: 2rem;
+    bottom: 5rem;
+  }
+}
+
+/* smaller mobile sizes */
+@media only screen and (max-width: 580px) {
+  .projects-items {
+    gap: 0;
+  }
+
+  .repo-card {
+    font-size: 0.9rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  /* keep the typing cursor visible without the blink animation */
+  .cursor {
+    background-color: currentColor;
   }
 }

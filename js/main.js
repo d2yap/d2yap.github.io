@@ -176,16 +176,29 @@ function spawnWord() {
   wrapper.appendChild(p);
   container.appendChild(wrapper);
 
-  // random position
-  const maxX = container.clientWidth - 80; // rough width buffer
-  const maxY = container.clientHeight - 20; // rough height buffer
+  // Measure the rendered word so positioning can never overflow the section
+  // (the decorative layer is no longer clipped, so a stray word would otherwise
+  // add horizontal scroll). Measured after insertion, before the animation.
+  const wordWidth = wrapper.offsetWidth;
+  const wordHeight = wrapper.offsetHeight;
+
+  const maxX = Math.max(0, container.clientWidth - wordWidth);
+  const maxY = Math.max(0, container.clientHeight - wordHeight);
 
   const x = Math.random() * maxX;
   const y = Math.random() * maxY;
 
   wrapper.style.left = `${x}px`;
   wrapper.style.top = `${y}px`;
+
+  // Force a style flush so the element's base state (scaleX(0)/opacity:0) is
+  // committed before the animation starts. Chromium coalesces the insertion and
+  // the class change into a single style pass, which resolves the implicit
+  // `from` keyframe against the final state and skips the animation entirely;
+  // Firefox happens to do the extra pass. Reading offsetWidth forces it.
+  void wrapper.offsetWidth;
   wrapper.classList.add("show");
+
   // fade out later
   setTimeout(() => {
     wrapper.classList.remove("show");

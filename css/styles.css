@@ -202,14 +202,17 @@ a {
   overscroll-behavior-y: contain;
 }
 
-/* Declaring the snap axis on the children as well as the container keeps the
-   latching consistent across engines (Chrome needs it on the container, WebKit
-   behaves better when the items declare it too). */
+/* The snap axis belongs only on the scroll container (.main). Repeating
+   scroll-snap-type on the children creates a nested snap context that Chromium
+   resolves differently from Firefox (Chromium re-snaps to the child's own axis,
+   so programmatic smooth scrolls and wheel gestures land on arbitrary pages).
+   The .page rule must never be a scroll container itself: `overflow: hidden`
+   plus a snap-type turns it into one, which also clips the decorative
+   absolutely-positioned words. */
 .page {
   width: 100%;
   height: 100vh;
   height: 100dvh;
-  scroll-snap-type: y mandatory;
   background-size: 40px 40px;
   background-image:
     linear-gradient(to right, var(--grid) 1px, transparent 1px),
@@ -221,7 +224,11 @@ a {
 
 .title {
   position: relative;
-  overflow: hidden;
+  /* Deliberately no `overflow`/`contain` on this section. Chromium treats
+     `overflow: hidden` here as a scroll container (which clips the absolutely
+     positioned decorative words) and `contain: paint` clips them the same way,
+     while Firefox still paints them. Leaving it uncontained keeps the paint
+     result identical across engines. */
   width: 100%;
   height: 100vh;
   height: 100dvh;
@@ -251,7 +258,9 @@ a {
 
 /* Decorative only. These boxes are absolutely positioned over the viewport and
    animate continuously, so keep them out of hit-testing entirely: otherwise the
-   compositor never goes idle and Chromium can stall scroll gesture routing. */
+   compositor never goes idle and Chromium can stall scroll gesture routing.
+   z-index must stay below the page content (the name block) so the words read as
+   background decoration, but the parent must not clip them. */
 .random {
   position: absolute;
   pointer-events: none;

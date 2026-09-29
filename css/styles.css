@@ -34,13 +34,34 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Lock the viewport so the document itself never scrolls. Without this, engines
+   that propagate the snap container's overflow to the viewport (WebKit) end up
+   with an unscrollable document while the container reports `overflow: scroll`. */
+html,
+body {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
 body {
   background-color: var(--bg);
   color: var(--fg);
+  height: 100%;
 }
 
 .main {
   scroll-behavior: smooth;
+}
+
+/* <main> is a full-viewport sibling of the floating controls. Let hit-testing
+   fall through it so the toggle and nav dots stay clickable, then re-enable
+   pointer events on the pages themselves. */
+.main {
+  pointer-events: none;
+}
+
+.page {
+  pointer-events: auto;
 }
 
 :focus-visible {
@@ -86,8 +107,8 @@ a {
 
 .toggle {
   cursor: pointer;
-  z-index: 99;
-  position: absolute;
+  z-index: 100;
+  position: fixed;
   top: 0;
   right: 0;
   width: 2.4rem;
@@ -109,12 +130,12 @@ a {
 }
 
 .navigation {
-  z-index: 99;
+  z-index: 100;
   text-align: right;
   font-size: 1.2rem;
   right: 2%;
   top: 40%;
-  position: absolute;
+  position: fixed;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -176,19 +197,26 @@ a {
   height: 100vh;
   height: 100dvh;
   scroll-snap-type: y mandatory;
-  overflow-y: scroll;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior-y: contain;
 }
 
+/* Declaring the snap axis on the children as well as the container keeps the
+   latching consistent across engines (Chrome needs it on the container, WebKit
+   behaves better when the items declare it too). */
 .page {
   width: 100%;
   height: 100vh;
   height: 100dvh;
+  scroll-snap-type: y mandatory;
   background-size: 40px 40px;
   background-image:
     linear-gradient(to right, var(--grid) 1px, transparent 1px),
     linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
 
   scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 .title {
@@ -221,8 +249,14 @@ a {
   bottom: 3.5rem;
 }
 
+/* Decorative only. These boxes are absolutely positioned over the viewport and
+   animate continuously, so keep them out of hit-testing entirely: otherwise the
+   compositor never goes idle and Chromium can stall scroll gesture routing. */
 .random {
   position: absolute;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
 }
 
 .random p {
@@ -237,7 +271,14 @@ a {
   padding-left: 0.5rem;
   padding-right: 0.5rem;
 
-  clip-path: inset(0 100% 0 0);
+  /* Animate only compositor-friendly properties. Animating `clip-path` forces a
+     main-thread paint every frame, which starves scroll gesture handling in
+     Chromium while words keep respawning. transform + opacity run on the
+     compositor and never block scrolling. */
+  transform: scaleX(0);
+  transform-origin: left center;
+  opacity: 0;
+  will-change: transform, opacity;
 }
 
 .random.show p {
@@ -246,7 +287,8 @@ a {
 
 @keyframes reveal {
   to {
-    clip-path: inset(0 0 0 0);
+    transform: scaleX(1);
+    opacity: 1;
   }
 }
 
@@ -256,10 +298,12 @@ a {
 
 @keyframes fadeOut {
   from {
-    clip-path: inset(0 0 0 0);
+    transform: scaleX(1);
+    opacity: 1;
   }
   to {
-    clip-path: inset(0 100% 0 0);
+    transform: scaleX(0);
+    opacity: 0;
   }
 }
 

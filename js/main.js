@@ -213,12 +213,37 @@ function stopWords() {
   spawnTimer = null;
 }
 
+let isScrolling = false;
+let scrollIdleTimer = null;
+
 function syncWords() {
-  if (titleVisible && !document.hidden) {
+  if (titleVisible && !document.hidden && !isScrolling) {
     startWords();
   } else {
     stopWords();
   }
+}
+
+// The word animation restarts a clip-path animation every 500ms. If that keeps
+// running while the user scrolls, the compositor never goes idle and Chromium
+// can stall the scroll gesture. Pause spawning for the duration of a scroll.
+function onScrollActivity() {
+  isScrolling = true;
+  stopWords();
+  syncWords();
+
+  window.clearTimeout(scrollIdleTimer);
+  scrollIdleTimer = window.setTimeout(() => {
+    isScrolling = false;
+    syncWords();
+  }, 180);
+}
+
+if (scroller) {
+  // passive: never block the scroll thread while only observing it
+  scroller.addEventListener("scroll", onScrollActivity, { passive: true });
+  scroller.addEventListener("wheel", onScrollActivity, { passive: true });
+  scroller.addEventListener("touchmove", onScrollActivity, { passive: true });
 }
 
 if (container && !reduceMotion.matches) {

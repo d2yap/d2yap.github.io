@@ -305,6 +305,14 @@ a {
   animation: fadeOut 1s ease forwards;
 }
 
+/* Reduced motion: words are placed but never animated, so they must be visible
+   at rest instead of waiting on the `reveal` animation. */
+.random.static p {
+  animation: none;
+  transform: scaleX(1);
+  opacity: 1;
+}
+
 @keyframes fadeOut {
   from {
     transform: scaleX(1);
@@ -406,13 +414,15 @@ a {
   border: 1px solid var(--border);
   background-color: var(--tile-bg);
   width: 20%;
-  padding-top: 10%;
+  padding-top: 1%;
+  padding-bottom: 4%;
 }
 
 .skills-group div p {
   text-align: center;
   text-wrap: balance;
   font-size: 1.2rem;
+  font-weight: bold;
   overflow-wrap: break-word;
 }
 
